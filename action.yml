@@ -236,3 +236,8 @@ runs:
       with:
         files: |
           */bin/*
+        name: |
+          ${{inputs.build-name}}
+          ${{inputs.build-name}}-amd64-installer.exe
+          ${{inputs.build-name}}.app.zip
+          ${{inputs.build-name}}.pkg
