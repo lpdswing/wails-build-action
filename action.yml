@@ -89,6 +89,10 @@ inputs:
     description: "Windows Signing Certificate Password"
     required: false
     default: ''
+  soft-version:
+    description: "Soft version"
+    required: false
+    default: '1.0.0'
 
 runs:
   using: "composite"
@@ -187,7 +191,7 @@ runs:
       working-directory: ${{ inputs.app-working-directory }}
       shell: bash
       run: |
-        ditto -c -k ./build/bin/${{inputs.build-name}}.app ./build/bin/${{inputs.build-name}}.app.zip
+        ditto -c -k --keepParent ./build/bin/${{inputs.build-name}}.app ./build/bin/${{inputs.build-name}}.app.zip
     - name: Building Installer
       if: runner.os == 'macOS' && inputs.sign != 'false' && inputs.sign-macos-installer-id != '' && startsWith(github.ref, 'refs/tags/')
       shell: bash
@@ -200,6 +204,7 @@ runs:
       working-directory: ${{ inputs.app-working-directory }}
       run: |
         productbuild --component ./build/bin/${{inputs.build-name}}.app ./build/bin/${{inputs.build-name}}.pkg
+        create-dmg ./build/bin/${{inputs.build-name}}.app ./build/bin/
     - name: Notarising Installer and zip
       if: runner.os == 'macOS' && inputs.sign != 'false' && startsWith(github.ref, 'refs/tags/')
       shell: bash
