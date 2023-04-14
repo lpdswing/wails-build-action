@@ -205,9 +205,9 @@ runs:
     - name: Building Installer
       if: runner.os == 'macOS' && inputs.sign-macos-installer-id == '' && startsWith(github.ref, 'refs/tags/')
       shell: bash
+      continue-on-error: true
       working-directory: ${{ inputs.app-working-directory }}
       run: |
-        productbuild --component ./build/bin/${{inputs.build-name}}.app ./build/bin/${{inputs.build-name}}.pkg
         create-dmg ./build/bin/${{inputs.build-name}}.app ./build/bin/
     - name: Notarising Installer and zip
       if: runner.os == 'macOS' && inputs.sign != 'false' && startsWith(github.ref, 'refs/tags/')
