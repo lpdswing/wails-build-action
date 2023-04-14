@@ -135,6 +135,10 @@ runs:
       if: runner.os == 'macOS'
       run: brew install mitchellh/gon/gon
       shell: bash
+    - name: Install macOS createdmg deps
+      if: runner.os == 'macOS'
+      run: npm install create-dmg -g
+      shell: bash
     # Building step
     - name: Build App
       if: inputs.build == 'true' && runner.os == 'macOS'
